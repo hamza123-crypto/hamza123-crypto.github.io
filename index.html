@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محادثة مشروع تنقية عوادم السيارات</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, "Segoe UI", Tahoma, sans-serif;
+    background: #d9dbd5;
+    color: #111;
+}
+
+.chat-app {
+    width: 100%;
+    max-width: 950px;
+    min-height: 100vh;
+    margin: auto;
+    background: #efeae2;
+}
+
+/* Header */
+.header {
+    height: 70px;
+    background: #075e54;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 18px;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,.15);
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #128c7e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.header-text h1 {
+    font-size: 17px;
+    margin-bottom: 4px;
+}
+
+.header-text p {
+    font-size: 12px;
+    opacity: .8;
+}
+
+/* Chat area */
+.chat {
+    padding: 25px 15px 50px;
+    background-color: #efeae2;
+    min-height: calc(100vh - 70px);
+}
+
+/* Date */
+.date {
+    width: fit-content;
+    margin: 0 auto 22px;
+    background: #d9fdd3;
+    color: #555;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+
+/* Messages */
+.message {
+    display: flex;
+    margin-bottom: 14px;
+}
+
+.message.user {
+    justify-content: flex-start;
+}
+
+.message.assistant {
+    justify-content: flex-end;
+}
+
+.bubble {
+    max-width: 84%;
+    padding: 11px 14px 7px;
+    border-radius: 9px;
+    line-height: 1.75;
+    font-size: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.12);
+}
+
+.user .bubble {
+    background: #d9fdd3;
+    border-top-right-radius: 2px;
+}
+
+.assistant .bubble {
+    background: white;
+    border-top-left-radius: 2px;
+}
+
+.sender {
+    color: #075e54;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.time {
+    display: block;
+    direction: ltr;
+    text-align: left;
+    color: #777;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+p {
+    margin: 7px 0;
+}
+
+h2 {
+    font-size: 19px;
+    margin: 8px 0 12px;
+}
+
+h3 {
+    font-size: 16px;
+    margin: 15px 0 7px;
+}
+
+strong {
+    color: #075e54;
+}
+
+/* Lists */
+ul {
+    padding-right: 22px;
+    margin: 8px 0;
+}
+
+li {
+    margin: 5px 0;
+}
+
+/* Quote */
+.quote {
+    background: #f4f4f4;
+    border-right: 4px solid #128c7e;
+    padding: 10px 12px;
+    margin: 12px 0;
+    border-radius: 5px;
+}
+
+/* Tables */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 12px 0;
+}
+
+table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+    background: white;
+    font-size: 12px;
+}
+
+th {
+    background: #075e54;
+    color: white;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
+/* Diagram */
+.diagram {
+    direction: ltr;
+    text-align: left;
+    background: #202124;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 12px 0;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: pre;
+}
+
+/* Status */
+.done {
+    color: #087f23;
+    font-weight: bold;
+}
+
+.pending {
+    color: #b36b00;
+    font-weight: bold;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .header {
+        height: 62px;
+    }
+
+    .chat {
+        padding: 18px 7px 35px;
+    }
+
+    .bubble {
+        max-width: 94%;
+        font-size: 13px;
+    }
+
+    .header-text h1 {
+        font-size: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-app">
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <div class="avatar">ح</div>
+
+        <div class="header-text">
+            <h1>مشروع تنقية عوادم السيارات</h1>
+            <p>محادثة المشروع</p>
+        </div>
+
+    </div>
+
+
+    <!-- CHAT -->
+    <div class="chat">
+
+        <div class="date">
+            6 أكتوبر 2026
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MESSAGE 1 -->
+        <!-- ========================= -->
+
+        <div class="message user">
+
+            <div class="bubble">
+
+                <div class="sender">
+                    حمزة
+                </div>
+
+                <p>
+                    أيوه، كحل <strong>مبدئي للتصميم</strong> نقدر نعمل الخزان محسوب على 200 كم بدل 50 كم، يعني <strong>4×</strong> الكمية التقديرية، وده يدي هامش أمان.
+                </p>
+
+                <p>
+                    بناءً على حساباتنا السابقة:
+                </p>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>المكوّن</th>
+                                <th>تقدير 50 كم</th>
+                                <th>تصميم خزان 200 كم</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>ماء للتفاعل مع SO₂</td>
+                                <td>0.14–2.81 mL</td>
+                                <td><strong>0.56–11.24 mL</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>ماء للتفاعل مع NO₂</td>
+                                <td>0.10–4.90 mL</td>
+                                <td><strong>0.40–19.60 mL</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>إجمالي الماء النظري</strong></td>
+                                <td><strong>0.24–7.71 mL</strong></td>
+                                <td><strong>0.96–30.84 mL</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Na₂CO₃ لـ SO₂</td>
+                                <td>حتى 16.6 g/50 كم</td>
+                                <td><strong>حتى 66.4 g/200 كم</strong></td>
+                            </tr>
+
+                            <tr>
+                                <td>Na₂CO₃ لـ NO₂</td>
+                                <td>حتى 28.8 g/50 كم</td>
+                                <td><strong>حتى 115.2 g/200 كم</strong></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <p>
+                    <strong>لكن:</strong> الأرقام دي ما زالت <strong>حسابات كيميائية نظرية</strong> وليست حجم خزان حقيقي.
+                </p>
+
+                <p>
+                    لو هنصمم الجهاز، أنا مش هخلي الخزان 31 مل مثلًا؛ هنحتاج نحدد <strong>تركيز Na₂CO₃ وحجم محلول الغسل المطلوب فعليًا</strong>، وغالبًا هيكون أكبر بكثير.
+                </p>
+
+                <div class="quote">
+
+                    <strong>يعني قرارنا حاليًا:</strong>
+
+                    <br><br>
+
+                    نصمم النظام مبدئيًا على مدى 200 كم بدل 50 كم، بحيث يكون عندنا Safety Margin = 4×.
+
+                </div>
+
+                <span class="time">
+                    9:20 PM
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MESSAGE 2 -->
+        <!-- ========================= -->
+
+        <div class="message user">
+
+            <div class="bubble">
+
+                <div class="sender">
+                    حمزة
+                </div>
+
+                <p>
+                    طيب المهم يعني بعيد عن دا احنا كدة جبنا حل الغازات اللي نقدر عليها لحد حالا، هاتي تقرير باللي هيحصل بالظبط لحد موقفنا وعايزك برضو تجبلي مادة الصندوق الخزان اللي هتستحمل الاحماض دي
+                </p>
+
+                <span class="time">
+                    9:01 PM
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MESSAGE 3 -->
+        <!-- ========================= -->
+
+        <div class="message assistant">
+
+            <div class="bubble">
+
+                <div class="sender">
+                    المساعد
+                </div>
+
+                <h2>
+                    تقرير مبدئي — نظام تنقية عوادم السيارات
+                </h2>
+
+
+                <h3>
+                    1. الفكرة العامة
+                </h3>
+
+                <p>
+                    الجهاز عبارة عن <strong>وحدة معالجة تُركب على مسار عادم السيارة</strong>، وهدفها في المرحلة الحالية التقاط الملوثات الغازية التي يمكن امتصاصها في الماء أو محلول مائي.
+                </p>
+
+                <p>
+                    المسار المبدئي:
+                </p>
+
+                <div class="quote">
+                    محرك السيارة → تبريد العادم → غرفة التلامس مع الماء/المحلول → خروج الغاز المعالج
+                </div>
+
+
+                <h3>
+                    2. الملوثات التي نستهدفها حاليًا
+                </h3>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>الملوث</th>
+                                <th>موقفه في المشروع</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td><strong>SO₂ / SOₓ</strong></td>
+                                <td class="done">✅ هدف أساسي</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>NO₂ / جزء من NOₓ</strong></td>
+                                <td class="done">✅ هدف أساسي</td>
+                            </tr>
+
+                            <tr>
+                                <td>المركبات الحمضية القابلة للامتصاص</td>
+                                <td class="done">✅ نستهدفها</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>NO</strong></td>
+                                <td class="pending">⏳ مؤجل للمرحلة الأخيرة</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>CO</strong></td>
+                                <td class="pending">⏳ مؤجل</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>CO₂</strong></td>
+                                <td class="pending">⏳ مؤجل</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>HC/VOCs</strong></td>
+                                <td class="pending">⏳ مؤجل</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <p>
+                    يعني <strong>مش هنحاول نحل كل ملوثات العادم مرة واحدة</strong>؛ المرحلة الأولى مركزة على الجزء القابل للمعالجة بالامتصاص المائي.
+                </p>
+
+
+                <h3>
+                    3. ماذا يحدث داخل الجهاز؟
+                </h3>
+
+                <p>
+                    <strong>المرحلة الأولى — تبريد العادم</strong>
+                </p>
+
+                <p>
+                    العادم الخارج من المحرك ساخن، لذلك يدخل أولًا إلى <strong>وحدة تبريد</strong> قبل دخوله إلى محلول الامتصاص.
+                </p>
+
+                <p>
+                    وده مهم لأننا لا نريد إدخال غازات شديدة السخونة مباشرة إلى خزان/غرفة بلاستيكية أو محلول مائي.
+                </p>
+
+
+                <p>
+                    <strong>المرحلة الثانية — الامتصاص</strong>
+                </p>
+
+                <p>
+                    العادم المبرد يدخل غرفة يحدث فيها <strong>تلامس كبير بين الغاز والسائل</strong>.
+                </p>
+
+                <p>
+                    بدل مجرد تمرير العادم فوق سطح الماء، التصميم النهائي الأفضل سيكون على الأغلب غرفة فيها رذاذ/حشوات تزيد مساحة التلامس.
+                </p>
+
+                <p>
+                    بالنسبة لـSO₂، استخدام الغسل الرطب بالماء أو المحاليل القلوية مبدأ معروف في معالجة الغازات.
+                </p>
+
+
+                <p>
+                    <strong>المرحلة الثالثة — تجميع السائل</strong>
+                </p>
+
+                <p>
+                    الغازات القابلة للامتصاص تنتقل من العادم إلى السائل.
+                </p>
+
+                <p>
+                    وبالتالي يصبح لدينا:
+                </p>
+
+                <div class="quote">
+                    <strong>عادم أقل احتواءً على الملوثات + محلول ملوث يحتوي على المواد التي تم التقاطها.</strong>
+                </div>
+
+                <p>
+                    المحلول ينتقل إلى خزان منفصل.
+                </p>
+
+
+                <p>
+                    <strong>المرحلة الرابعة — التخزين</strong>
+                </p>
+
+                <p>
+                    الخزان يحتفظ بالمحلول الملوث إلى أن يتم الوصول إلى نقطة التجميع.
+                </p>
+
+                <p>
+                    وبحسب تصورنا الحالي، سنصمم النظام مبدئيًا على <strong>200 كم بدل 50 كم</strong>، أي أربعة أضعاف هامش المسافة الذي كنا نحسب عليه.
+                </p>
+
+
+                <h3>
+                    4. مادة الصندوق والخزان
+                </h3>
+
+                <p>
+                    هنا أنا عملت بحث سريع لأن اختيار المادة مهم جدًا.
+                </p>
+
+                <p>
+                    <strong>ترشيحي الأول: Polypropylene — PP</strong>
+                </p>
+
+                <p>
+                    يعني <strong>بولي بروبيلين</strong>.
+                </p>
+
+                <p>
+                    وده مش اختيار عشوائي؛ PP معروف بمقاومته الجيدة للأحماض والقواعد والمحاليل غير العضوية، وهناك جداول مقاومة كيميائية تُظهر مقاومة جيدة للمحاليل المخففة من حمض الكبريتيك، وكذلك حمض النيتريك بتركيزات منخفضة/متوسطة.
+                </p>
+
+                <p>
+                    كما أن أنظمة الـwet scrubber نفسها تُصنع من PP في تطبيقات معالجة الأبخرة الحمضية.
+                </p>
+
+
+                <div class="quote">
+
+                    <strong>جسم وحدة الامتصاص → PP</strong>
+
+                    <br>
+
+                    <strong>الخزان → PP</strong>
+
+                </div>
+
+                <p>
+                    وده اختيار مبدئي ممتاز لمشروعنا من ناحية <strong>التكلفة + مقاومة التآكل + سهولة التصنيع</strong>.
+                </p>
+
+
+                <h3>
+                    هل نستخدم PVC؟
+                </h3>
+
+                <p>
+                    ممكن، وPVC عنده مقاومة جيدة للعديد من الأحماض، لكن له حدود حرارية أقل، ومصدر صناعي يضع PP عند حوالي <strong>80°C للاستخدام المستمر</strong> مقابل حوالي <strong>60°C لـPVC</strong> في تطبيقات scrubber معينة.
+                </p>
+
+                <p>
+                    وبما إننا أصلًا عاملين <strong>مرحلة تبريد قبل وحدة الامتصاص</strong>، فالـPP يصبح اختيارًا منطقيًا جدًا.
+                </p>
+
+
+                <h3>
+                    هل نستخدم معدن؟
+                </h3>
+
+                <p>
+                    <strong>أنا لا أرشحه للخزان الملامس للمحلول الحمضي كخيار أول.</strong>
+                </p>
+
+                <p>
+                    ممكن توجد أنواع ستانلس مناسبة في ظروف معينة، لكن لماذا ندفع أكثر بينما PP يحقق لنا مقاومة كيميائية جيدة وتكلفة أقل؟
+                </p>
+
+
+                <h3>
+                    5. الشكل المبدئي الذي وصلنا إليه
+                </h3>
+
+                <div class="diagram">
+          عادم السيارة
+               ↓
+       ┌───────────────┐
+       │ وحدة التبريد  │
+       └───────┬───────┘
+               ↓
+       ┌───────────────┐
+       │ غرفة الامتصاص │
+       │               │
+       │ ماء + Na₂CO₃  │
+       │      ↕        │
+       │ تلامس غاز/سائل│
+       └───────┬───────┘
+               ↓
+       ┌───────────────┐
+       │ خزان المحلول  │
+       │    الملوث     │
+       └───────────────┘
+                </div>
+
+
+                <p>
+                    <strong>المادة المقترحة مبدئيًا للجسم والخزان: PP (Polypropylene).</strong>
+                </p>
+
+                <p>
+                    لكن نقطة مهمة جدًا: <strong>مش هنعتبر المادة "مضمونة لأي حمض وبأي تركيز ودرجة حرارة"</strong>. مقاومة PP ممتازة مع كثير من الأحماض المخففة، لكنها تقل مع المؤكسدات القوية والتركيزات العالية؛ مثلًا جداول المقاومة تصنف حمض النيتريك المركز كحالة شديدة الهجوم على PP.
+                </p>
+
+                <p>
+                    وده سبب إضافي إننا لازم نصمم النظام بحيث <strong>العادم يدخل بعد التبريد، والمحلول الناتج يظل مخففًا نسبيًا</strong>.
+                </p>
+
+
+                <h3>
+                    إذن موقفنا الآن:
+                </h3>
+
+                <ul>
+
+                    <li class="done">
+                        ✅ الملوثات المستهدفة محددة مبدئيًا
+                    </li>
+
+                    <li class="done">
+                        ✅ مبدأ الامتصاص المائي محدد
+                    </li>
+
+                    <li class="done">
+                        ✅ Na₂CO₃ مرشح للمحلول
+                    </li>
+
+                    <li class="done">
+                        ✅ نظام تخزين السائل الملوث محدد
+                    </li>
+
+                    <li class="done">
+                        ✅ مدى التصميم المبدئي = 200 كم
+                    </li>
+
+                    <li class="done">
+                        ✅ PP مرشح أساسي لمادة الصندوق والخزان
+                    </li>
+
+                    <li class="pending">
+                        ⏳ NO وCO وCO₂ وHC مؤجلة
+                    </li>
+
+                    <li class="pending">
+                        ⏳ كمية المحلول الفعلية وحجم الخزان النهائي لسه محتاجين تجربة وحساب هندسي
+                    </li>
+
+                </ul>
+
+
+                <p>
+                    والخطوة المهمة جدًا بعد كده هي <strong>إننا نصمم غرفة الامتصاص نفسها</strong>؛ لأنها هي اللي هتحدد هل الماء/Na₂CO₃ هيمسك الملوثات بكفاءة ولا مجرد صندوق مياه والعادم يعدي منه وخلاص.
+                </p>
+
+
+                <div class="quote">
+
+                    <strong>موقفنا الحالي:</strong><br><br>
+
+                    <strong>SO₂ / SOₓ</strong> → تم تحديد طريقة المعالجة مبدئيًا<br>
+                    <strong>NO₂ / جزء من NOₓ</strong> → تم تحديد طريقة المعالجة مبدئيًا<br>
+                    <strong>NO</strong> → لم يتم حله بعد<br>
+                    <strong>CO</strong> → لم يتم حله بعد<br>
+                    <strong>CO₂</strong> → لم يتم حله بعد<br>
+                    <strong>HC/VOCs</strong> → لم يتم حلها بعد
+
+                </div>
+
+
+                <span class="time">
+                    9:01 PM
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MESSAGE 4 -->
+        <!-- ========================= -->
+
+        <div class="message user">
+
+            <div class="bubble">
+
+                <div class="sender">
+                    حمزة
+                </div>
+
+                <p>
+                    تمام بكرة بقى هكلمك على الغازات التانية اللي لسا محلينهاش
+                </p>
+
+                <span class="time">
+                    9:02 PM
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- MESSAGE 5 -->
+        <!-- ========================= -->
+
+        <div class="message assistant">
+
+            <div class="bubble">
+
+                <div class="sender">
+                    المساعد
+                </div>
+
+                <p>
+                    تمام يا حمزة 😂 كده نقفل الجزء ده النهارده.
+                </p>
+
+                <p>
+                    بكرة نكمل <strong>NO وCO وCO₂ وHC</strong> واحدة واحدة، ونشوف لكل واحد:
+                </p>
+
+                <ul>
+
+                    <li>
+                        هل ينفع يتعالج في نفس الجهاز؟
+                    </li>
+
+                    <li>
+                        المادة/الطريقة الأرخص.
+                    </li>
+
+                    <li>
+                        هل يحتاج مرحلة مستقلة؟
+                    </li>
+
+                    <li>
+                        وإزاي ندمجهم كلهم في النظام النهائي.
+                    </li>
+
+                </ul>
+
+                <p>
+                    وبعد ما نخلص الملوثات كلها، نبقى نرجع للتصميم النهائي والخزان والمحطات والتجربة بتاعة ISEF.
+                </p>
+
+                <div class="quote">
+                    <strong>دلوقتي عندنا أساس محترم للفكرة، وبكرة نكمّل الباقي.</strong>
+                </div>
+
+                <span class="time">
+                    9:02 PM
+                </span>
+
+            </div>
+
+        </div>
+
+</body>
+</html>
